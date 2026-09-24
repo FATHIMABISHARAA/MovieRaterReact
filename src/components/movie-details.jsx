@@ -2,69 +2,59 @@
 
 import React, { useState, useEffect } from 'react';
 import { FaRegStar,FaStar  } from "react-icons/fa";
+import API from '../services/api-service';
 export default function MovieDetails({movie,updateMovie}) {
    const [ highlighted, setHighlighted ] = useState(-1)
    const [error, setError] = useState(null);
   
    const rateMovie=async(rate)=>{
-    try {
-        const response = await fetch(
-            `http://127.0.0.1:8000/api/movies/${movie.id}/rate_movie/`,
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': 'Token 2b91d439d909018447820d6ccb05c2acbd39d31c',
-                        },
-                        body:JSON.stringify({stars: rate})
-                    }
-                );
-
-                console.log('Status:', response.status);
-
-                if (!response.ok) {
-                    setError('Error setting rating');
-                    return;
+        const rateMovie = async() =>{
+            const resp= await API.rateMovie(movie.id,{stars: rate});
+            if(resp) getNewMovie();
+        
                 }
+                rateMovie()
 
-                const result = await response.json();
-                setError("Succesfully Updated")
-                getNewMovie()
-                // console.log('Movies:', result);
+   } 
 
-                // setMovies(result);
-            } catch{
-                setError("Error setting ratings")
-            }
-        }
-    const getNewMovie=async(rate)=>{
-        try {
-            const response = await fetch(
-                    `http://127.0.0.1:8000/api/movies/${movie.id}/`,
-                    {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': 'Token 2b91d439d909018447820d6ccb05c2acbd39d31c',
-                        },
-                    }
-                );
 
-                console.log('Status:', response.status);
+    // try {
+    //     const response = await fetch(
+    //         `http://127.0.0.1:8000/api/movies/${movie.id}/rate_movie/`,
+    //                 {
+    //                     method: 'POST',
+    //                     headers: {
+    //                         'Content-Type': 'application/json',
+    //                         'Authorization': 'Token 2b91d439d909018447820d6ccb05c2acbd39d31c',
+    //                     },
+    //                     body:JSON.stringify({stars: rate})
+    //                 }
+    //             );
 
-                if (!response.ok) {
-                    setError('Error getting movie');
-                    return;
+    //             console.log('Status:', response.status);
+
+    //             if (!response.ok) {
+    //                 setError('Error setting rating');
+    //                 return;
+    //             }
+
+    //             const result = await response.json();
+    //             setError("Succesfully Updated")
+    //             getNewMovie()
+    //             // console.log('Movies:', result);
+
+    //             // setMovies(result);
+    //         } catch{
+    //             setError("Error setting ratings")
+    //         }
+        // }
+    const getNewMovie=async()=>{
+        const fetchMovie = async() =>{
+            const resp= await API.getMovie(movie.id);
+            if(resp) updateMovie(resp);
+        
                 }
-
-                const result = await response.json();
-                // setError("Succesfully Updated")
-                // console.log( result);
-                updateMovie(result);
-                // setMovies(result);
-            } catch{
-                setError("Error getting movies")
-            }
+                fetchMovie()
 
    } 
     return (
