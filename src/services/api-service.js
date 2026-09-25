@@ -1,5 +1,5 @@
 const API_URL = 'http://127.0.0.1:8000';
-const TOKEN = '2b91d439d909018447820d6ccb05c2acbd39d31c';
+// const TOKEN = '2b91d439d909018447820d6ccb05c2acbd39d31c';
 
 export default class API{
     static async loginUser(body){
@@ -25,7 +25,7 @@ export default class API{
                 return await response.json();
                
             }
-    static async fetchMovies(){
+    static async fetchMovies(token){
        
         const response = await fetch(
             `${API_URL}/api/movies/`,
@@ -33,7 +33,7 @@ export default class API{
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Token ${TOKEN} `,
+                            'Authorization': `Token ${token} `,
                         }                    }
                 );
 
@@ -48,7 +48,7 @@ export default class API{
             }
 
 
-    static async getMovie(movie_id){
+    static async getMovie(movie_id,token){
        
         const response = await fetch(
             `${API_URL}/api/movies/${movie_id}/`,
@@ -56,7 +56,7 @@ export default class API{
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Token ${TOKEN} `,
+                            'Authorization': `Token ${token} `,
                         }                    }
                 );
 
@@ -70,7 +70,7 @@ export default class API{
                
             } 
 
-    static async rateMovie(movie_id,body){
+    static async rateMovie(movie_id,body,token){
        
         const response = await fetch(
             `${API_URL}/api/movies/${movie_id}/rate_movie/`,
@@ -78,7 +78,7 @@ export default class API{
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Token ${TOKEN} `,
+                            'Authorization': `Token ${token} `,
                         }  ,
                         body:JSON.stringify(body)
                   }
@@ -95,7 +95,7 @@ export default class API{
             } 
 
 
-    static async updateMovie(movie_id,body){
+    static async updateMovie(movie_id,body,token){
        
         const response = await fetch(
             `${API_URL}/api/movies/${movie_id}/`,
@@ -103,7 +103,7 @@ export default class API{
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Token ${TOKEN} `,
+                            'Authorization': `Token ${token} `,
                         },
                         body:JSON.stringify(body)
                     }
@@ -118,7 +118,7 @@ export default class API{
                 return await response.json();
                
             } 
-    static async createMovie(body){
+    static async createMovie(body,token){
        
         const response = await fetch(
             `${API_URL}/api/movies/`,
@@ -126,7 +126,7 @@ export default class API{
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Token ${TOKEN} `,
+                            'Authorization': `Token ${token} `,
                         },
                         body:JSON.stringify(body)
                     }
@@ -141,7 +141,7 @@ export default class API{
                 return await response.json();
                
             } 
-    static async removeMovie(movie_id){
+    static async removeMovie(movie_id,token){
        
         const response = await fetch(
             `${API_URL}/api/movies/${movie_id}/`,
@@ -149,7 +149,7 @@ export default class API{
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Token ${TOKEN} `,
+                            'Authorization': `Token ${token} `,
                         },
                     }
                 );

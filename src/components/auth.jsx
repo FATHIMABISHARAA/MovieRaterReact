@@ -1,12 +1,24 @@
-import React,{useState} from "react";
+import React,{useState,useContext,useEffect} from "react";
 import API from "../services/api-service";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+// import {TokenContext} from '../index';
 export default function Auth(){
     const [username,setUsername]=useState("");
     const [password,setPassword]=useState("");
+    const [token,setToken] = useCookies("mr-token");
+    const navigate = useNavigate();
+    
+    useEffect(()=>{
+        // console.log('token',token['mr-token']);
+        if(token['mr-token']) navigate('/movies');
+        
+    },[token])
+    
     const loginUser=()=>{
         const getToken =async ()=>{
             const resp=await API.loginUser({username,password});
-            if(resp) console.log(resp.token);
+            if(resp) setToken("mr-token",resp.token);
             
 
         }

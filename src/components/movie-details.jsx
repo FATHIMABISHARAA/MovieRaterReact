@@ -3,13 +3,17 @@
 import React, { useState, useEffect } from 'react';
 import { FaRegStar,FaStar  } from "react-icons/fa";
 import API from '../services/api-service';
+import { useCookies } from "react-cookie";
+
+
 export default function MovieDetails({movie,updateMovie}) {
    const [ highlighted, setHighlighted ] = useState(-1)
    const [error, setError] = useState(null);
-  
+   const [token] = useCookies("mr-token");
+
    const rateMovie=async(rate)=>{
         const rateMovie = async() =>{
-            const resp= await API.rateMovie(movie.id,{stars: rate});
+            const resp= await API.rateMovie(movie.id,{stars: rate},token["mr-token"]);
             if(resp) getNewMovie();
         
                 }
@@ -50,7 +54,7 @@ export default function MovieDetails({movie,updateMovie}) {
         // }
     const getNewMovie=async()=>{
         const fetchMovie = async() =>{
-            const resp= await API.getMovie(movie.id);
+            const resp= await API.getMovie(movie.id,token["mr-token"]);
             if(resp) updateMovie(resp);
         
                 }

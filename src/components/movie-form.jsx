@@ -1,8 +1,11 @@
 import React, { useState ,useEffect} from "react"
 import API from '../services/api-service';
+import { useCookies } from "react-cookie";
+
 export default function MovieForm({movie,updateMovie,addNewMovie}){
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [token] = useCookies("mr-token");
 
     useEffect(() => {
         if (movie) {
@@ -15,7 +18,7 @@ export default function MovieForm({movie,updateMovie,addNewMovie}){
         const resp = await API.updateMovie(movie.id, {
             title,
             description
-        });
+        },token["mr-token"]);
 
         if (resp) {
             updateMovie(resp);
@@ -25,7 +28,7 @@ export default function MovieForm({movie,updateMovie,addNewMovie}){
         const resp = await API.createMovie( {
             title,
             description
-        });
+        },token["mr-token"]);
 
        if (resp) {
             updateMovie(resp);
