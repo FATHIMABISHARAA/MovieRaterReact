@@ -25,6 +25,30 @@ export default class API{
                 return await response.json();
                
             }
+     static async registerUser(body){
+       
+        const response = await fetch(
+            `${API_URL}/api/users/`,
+                {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },                        
+                        body:JSON.stringify(body)
+
+                    }
+                );
+
+                console.log('Status:', response.status);
+
+                if (!response.ok) {
+                    return null;
+                }
+
+                return await response.json();
+               
+            }
+       
     static async fetchMovies(token){
        
         const response = await fetch(
