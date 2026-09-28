@@ -34,6 +34,8 @@ export default function MovieForm({movie,updateMovie,addNewMovie}){
             updateMovie(resp);
         }
     };
+
+    const isDisabled = title=='' || description=='';
     return(
         <React.Fragment>
                {movie &&
@@ -45,11 +47,12 @@ export default function MovieForm({movie,updateMovie,addNewMovie}){
                     <label htmlFor='description'>Description</label>
                     <textarea id='description' placeholder="description " value={description}
                     onChange={(evt)=>setDescription(evt.target.value)}/>
+                    <p>&nbsp;</p>
                     {
                          movie.id ?
-                            <button onClick={()=>saveMovie()}>Update Movie</button>:
+                            <button onClick={()=>saveMovie()} disabled={isDisabled}>Update Movie</button>:
 
-                            <button onClick={()=>createMovie()}>Create Movie</button>
+                            <button onClick={()=>createMovie()} disabled={isDisabled}>Create Movie</button>
 
                     }
                     

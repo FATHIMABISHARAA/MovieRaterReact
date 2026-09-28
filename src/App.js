@@ -5,6 +5,7 @@ import MovieDetails from './components/movie-details';
 import MovieForm from './components/movie-form';
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import { FaSignOutAlt } from "react-icons/fa";
 
 
 function App() {
@@ -13,14 +14,14 @@ function App() {
   const [updatedMovie,setUpdatedMovie]=useState(null)
   const [newMovie,setNewdMovie]=useState(null)
   
-  const [token] = useCookies("mr-token");
+  const [cookie,setCookie,deleteCookie] = useCookies(['mr-token']);
   const navigate = useNavigate();
   
   useEffect(()=>{
         // console.log('token',token['mr-token']);
-    if(!token['mr-token']) navigate('/');
+    if(!cookie['mr-token']) navigate('/');
         
-  },[token]) 
+  },[cookie]) 
   const movieClicked = (movie,isEdit) =>{
     if(isEdit){
       setSelectedMovie(null);
@@ -39,11 +40,15 @@ function App() {
   setEditedMovie({title:'',description:''})
 
  }
+ const logoutUser = () => {
+  deleteCookie('mr-token', { path: '/' });
+  navigate('/');
+};
   return (
     <div className="App">
       <header className="App-header p-10 border-b-2 border-orange-500 mb-5">
         <h1>Movie-Rater</h1>
-        
+        <h1 className='absolute top-5 right-5 text-3xl cursor-pointer' onClick={()=>logoutUser()}><FaSignOutAlt/></h1>
       </header>
       <div className='grid grid-cols-2'>
         <div> 
