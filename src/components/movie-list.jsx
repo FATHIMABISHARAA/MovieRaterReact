@@ -4,13 +4,22 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import API from '../services/api-service';
 import { useCookies } from "react-cookie";
+import useFetch from '../services/useFetch';
 export default function MovieList({ movieClicked, newMovie, updatedMovie }) {
+    const {data,loading,error}=useFetch('/api/movies/');
+    
     const [movies, setMovies] = useState([]);
-    const [error, setError] = useState(null);
+    // const [error, setError] = useState(null);
     const [token] = useCookies("mr-token");
-
     // Update an existing movie when newMovie changes
     
+    useEffect(()=>{
+        
+        setMovies(data)
+
+    },[data])
+
+
     useEffect(()=>{
         // console.log("newMovie", newMovie)
         
@@ -68,7 +77,7 @@ export default function MovieList({ movieClicked, newMovie, updatedMovie }) {
     // }, [updatedMovie]);
 
     // Get movies from Django
-    useEffect(() => {
+    // useEffect(() => {
         // const fetchMovie = async () => {
         //     try {
         //         const response = await fetch(
@@ -102,17 +111,19 @@ export default function MovieList({ movieClicked, newMovie, updatedMovie }) {
         // };
 
         // fetchMovie();
-        const fetchListOfMovies = async() =>{
-            const resp= await API.fetchMovies(token["mr-token"]);
-            if(resp) setMovies(resp);
+    
+    
+    //     useEffect(() => {
+    //     const fetchListOfMovies = async() =>{
+    //         const resp= await API.fetchMovies(token["mr-token"]);
+    //         if(resp) setMovies(resp);
 
-        }
-        fetchListOfMovies()
-    }, []);
-
-    if (error) {
-        return <h1>{error}</h1>;
-    }
+    //     }
+    //     fetchListOfMovies()
+    // }, []);
+    if (loading) return <h1>Loading</h1>;
+    if (error) return <h1>{error}</h1>;
+    
     const removeMovie=(movieToBeRemoved)=>{
         const resp = API.removeMovie(movieToBeRemoved.id,token["mr-token"]);
         if(resp){
